@@ -1,19 +1,23 @@
 package cn.throwx.octopus.server.application.controller;
 
+import cn.throwx.octopus.contract.request.CreateUrlMapRequest;
+import cn.throwx.octopus.contract.response.CreateUrlMapResponse;
+import cn.throwx.octopus.contract.response.Response;
 import cn.throwx.octopus.server.filter.TransformContext;
+import cn.throwx.octopus.server.infra.common.UrlMapStatus;
+import cn.throwx.octopus.server.model.entity.UrlMap;
 import cn.throwx.octopus.server.service.UrlMapService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,6 +30,10 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RestController
 public class OctopusController {
+
+
+    @Value("${default.octopus.domain}")
+    private String defaultDomain;
 
     private final UrlMapService urlMapService;
 
@@ -52,4 +60,21 @@ public class OctopusController {
         // 这里有一个技巧,flush用到的线程和内部逻辑处理的线程不是同一个线程,所有要用到TTL
         return Mono.fromRunnable(context.getRedirectAction());
     }
+
+    @PostMapping(path = "/create")
+    public Response<CreateUrlMapResponse> createUrlMap(@RequestBody CreateUrlMapRequest request) {
+        UrlMap urlMap = new UrlMap();
+        urlMap.setUrlStatus(UrlMapStatus.AVAILABLE.getValue());
+        urlMap.setLongUrl(request.getLongUrl());
+        urlMap.setDescription(request.getDescription());
+        String shortUrl = urlMapService.createUrlMap(defaultDomain, urlMap);
+        return Response.succeed(new CreateUrlMapResponse(request.getRequestId(), shortUrl));
+    }
+
+    @GetMapping(path = "/heartbeat")
+    public String heartbeat() {
+        LocalDate now = LocalDate.now();
+        return now.toString();
+    }
+
 }

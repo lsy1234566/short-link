@@ -15,9 +15,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <octopus.contract.version>1.0-SNAPSHOT</octopus.contract.version>
+        <contract.version>1.0-SNAPSHOT</contract.version>
+        <octopus.contract.version>1.0-SNAPSHOT</octopus.contract.version>
         <junit.version>4.13</junit.version>
-        <lombok.version>1.18.24</lombok.version>
-        <spring.boot.version>2.3.0.RELEASE</spring.boot.version>
+        <lombok.version>1.18.22</lombok.version>
+        <spring.boot.version>2.7.0</spring.boot.version>
         <mybatis.spring.version>2.0.3</mybatis.spring.version>
         <mybatis.generator.version>1.4.0</mybatis.generator.version>
         <mybatis.version>3.5.3</mybatis.version>
@@ -26,13 +28,10 @@
         <common.codec.version>1.14</common.codec.version>
         <common.lang3.version>3.10</common.lang3.version>
         <commons.validator.version>1.6</commons.validator.version>
-        <redisson.version>3.11.5</redisson.version>
+        <redisson.version>3.17.0</redisson.version>
         <user.agent.utils.version>1.21</user.agent.utils.version>
-        <dubbo.version>2.7.7</dubbo.version>
-        <nacos.version>1.4.0</nacos.version>
         <slf4j.api.version>1.7.30</slf4j.api.version>
         <ttl.version>2.12.0</ttl.version>
-        <contract.version>1.0-SNAPSHOT</contract.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -92,16 +91,6 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${user.agent.utils.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-spring-boot-starter</artifactId>
-                <version>${dubbo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.nacos</groupId>
-                <artifactId>nacos-client</artifactId>
-                <version>${nacos.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
