@@ -15,6 +15,9 @@ public enum ConversionUtils {
      */
     X;
 
+    /**
+     * 如果是db批量申请编号方案-不能乱改
+     */
     private static final String CHARS = "oNWxUYwrXdCOIj4ck6M8RbiQa3H91pSmZTAh70zquLnKvt2VyEGlBsPJgDe5Ff";
     private static final int SCALE = 62;
     private static final int MIN_LENGTH = 5;
@@ -55,5 +58,17 @@ public enum ConversionUtils {
             value += (long) (tempCharValue * Math.pow(SCALE, string.length() - i - 1));
         }
         return value;
+    }
+
+    public static String getCHARS() {
+        return CHARS;
+    }
+
+    public static int getSCALE() {
+        return SCALE;
+    }
+
+    public static int getMinLength() {
+        return MIN_LENGTH;
     }
 }

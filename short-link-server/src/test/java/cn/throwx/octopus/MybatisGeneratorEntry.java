@@ -22,7 +22,7 @@ public class MybatisGeneratorEntry {
 
     public static void main(String[] args) throws Exception {
         List<String> warnings = new ArrayList<>();
-        File configFile = new File("octopus-server/target/classes/generator-octopus.xml");
+        File configFile = new File("short-link-server/target/classes/generator-octopus.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(configFile);
         // 如果已经存在生成过的文件是否进行覆盖

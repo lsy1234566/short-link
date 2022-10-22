@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.throwx.octopus.server.repository.mapper.CompressionCodeNumMapper">
+    <resultMap id="BaseResultMap" type="cn.throwx.octopus.server.model.entity.CompressionCodeNum">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="current_num" jdbcType="BIGINT" property="currentNum"/>
+        <result column="end_num" jdbcType="BIGINT" property="endNum"/>
+        <result column="work_id" jdbcType="BIGINT" property="workId"/>
+        <result column="version_id" jdbcType="INTEGER" property="versionId"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id
+        , current_num, end_num, work_id, version_id, update_time, create_time
+    </sql>
+    <select id="selectByExample" parameterType="cn.throwx.octopus.server.model.entity.CompressionCodeNumExample"
+            resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from compression_code_num
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from compression_code_num
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from compression_code_num
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="cn.throwx.octopus.server.model.entity.CompressionCodeNum">
+        insert into compression_code_num (id, current_num, end_num,
+                                          work_id, version_id, update_time,
+                                          create_time)
+        values (#{id,jdbcType=BIGINT}, #{currentNum,jdbcType=BIGINT}, #{endNum,jdbcType=BIGINT},
+                #{workId,jdbcType=BIGINT}, #{versionId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP},
+                #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="cn.throwx.octopus.server.model.entity.CompressionCodeNum">
+        insert into compression_code_num
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="currentNum != null">
+                current_num,
+            </if>
+            <if test="endNum != null">
+                end_num,
+            </if>
+            <if test="workId != null">
+                work_id,
+            </if>
+            <if test="versionId != null">
+                version_id,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="currentNum != null">
+                #{currentNum,jdbcType=BIGINT},
+            </if>
+            <if test="endNum != null">
+                #{endNum,jdbcType=BIGINT},
+            </if>
+            <if test="workId != null">
+                #{workId,jdbcType=BIGINT},
+            </if>
+            <if test="versionId != null">
+                #{versionId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByExampleSelective" parameterType="map">
+        update compression_code_num
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=BIGINT},
+            </if>
+            <if test="record.currentNum != null">
+                current_num = #{record.currentNum,jdbcType=BIGINT},
+            </if>
+            <if test="record.endNum != null">
+                end_num = #{record.endNum,jdbcType=BIGINT},
+            </if>
+            <if test="record.workId != null">
+                work_id = #{record.workId,jdbcType=BIGINT},
+            </if>
+            <if test="record.versionId != null">
+                version_id = #{record.versionId,jdbcType=INTEGER},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update compression_code_num
+        set id = #{record.id,jdbcType=BIGINT},
+        current_num = #{record.currentNum,jdbcType=BIGINT},
+        end_num = #{record.endNum,jdbcType=BIGINT},
+        work_id = #{record.workId,jdbcType=BIGINT},
+        version_id = #{record.versionId,jdbcType=INTEGER},
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.throwx.octopus.server.model.entity.CompressionCodeNum">
+        update compression_code_num
+        <set>
+            <if test="currentNum != null">
+                current_num = #{currentNum,jdbcType=BIGINT},
+            </if>
+            <if test="endNum != null">
+                end_num = #{endNum,jdbcType=BIGINT},
+            </if>
+            <if test="workId != null">
+                work_id = #{workId,jdbcType=BIGINT},
+            </if>
+            <if test="versionId != null">
+                version_id = #{versionId,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.throwx.octopus.server.model.entity.CompressionCodeNum">
+        update compression_code_num
+        set current_num = #{currentNum,jdbcType=BIGINT},
+            end_num     = #{endNum,jdbcType=BIGINT},
+            work_id     = #{workId,jdbcType=BIGINT},
+            version_id  = #{versionId,jdbcType=INTEGER},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="initNum">
+        INSERT INTO compression_code_num(current_num, end_num, work_id, version_id)
+        SELECT ${currentNum} AS current_num,
+               ${endNum}     AS end_num,
+               ${workId}     AS work_id,
+               ${versionId}  AS version_id
+        FROM DUAL
+        WHERE (SELECT COUNT(0) FROM compression_code_num WHERE work_id = 1 FOR
+        UPDATE)<![CDATA[<=]]>0;
+    </insert>
+
+    <update id="casApplyNum">
+        UPDATE compression_code_num
+        SET current_num=#{startNum},
+            end_num=#{endNum},
+            version_id=#{nextVersionId}
+        WHERE work_id = #{workId}
+          AND version_id = #{versionId}
+    </update>
+</mapper>

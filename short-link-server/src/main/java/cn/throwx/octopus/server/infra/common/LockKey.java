@@ -26,6 +26,11 @@ public enum LockKey {
      * 访问统计任务
      */
     VISITOR_STATS_TASK("octopus:visitor:stats:task", "访问统计任务", 0L, 10000L),
+    /**
+     * 批量申请压缩码编号
+     */
+    BATCH_APPLY("octopus:url:map:batchapply", "批量申请压缩码编号", 0L, 10000L),
+
 
     ;
 

@@ -12,5 +12,5 @@ public interface SequenceGenerator {
      *
      * @return long
      */
-    long generate();
+    long generate(Long id);
 }

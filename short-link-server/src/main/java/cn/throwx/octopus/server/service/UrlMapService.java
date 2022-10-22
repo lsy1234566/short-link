@@ -9,6 +9,7 @@ import cn.throwx.octopus.server.infra.common.CompressionCodeStatus;
 import cn.throwx.octopus.server.infra.common.LockKey;
 import cn.throwx.octopus.server.infra.common.UrlMapStatus;
 import cn.throwx.octopus.server.infra.support.keygen.SequenceGenerator;
+import cn.throwx.octopus.server.infra.support.keygen.SnowflakeSequenceGenerator;
 import cn.throwx.octopus.server.infra.support.lock.DistributedLock;
 import cn.throwx.octopus.server.infra.support.lock.DistributedLockFactory;
 import cn.throwx.octopus.server.infra.util.ConversionUtils;
@@ -59,6 +60,9 @@ public class UrlMapService implements BeanFactoryAware {
     @Value("${compress.code.batch:100}")
     private Integer compressCodeBatch;
 
+    @Value("${compress.code.expect.length:6}")
+    private Integer compressCodeExpectLength;
+
     private UrlMapService self;
 
     @Override
@@ -101,7 +105,7 @@ public class UrlMapService implements BeanFactoryAware {
         DistributedLock lock = distributedLockFactory.provideDistributedLock(LockKey.CREATE_URL_MAP.getCode());
         try {
             lock.lock(LockKey.CREATE_URL_MAP.getReleaseTime(), TimeUnit.MILLISECONDS);
-            CompressionCode compressionCode = getAvailableCompressCode();
+            CompressionCode compressionCode = getAvailableCompressCode(1L);
             Assert.isTrue(Objects.nonNull(compressionCode) &&
                     CompressionCodeStatus.AVAILABLE.getValue().equals(compressionCode.getCodeStatus()), "压缩码不存在或者已经被使用");
             String longUrl = insertEntity.getLongUrl();
@@ -179,12 +183,12 @@ public class UrlMapService implements BeanFactoryAware {
      *
      * @return CompressCode
      */
-    private CompressionCode getAvailableCompressCode() {
+    private CompressionCode getAvailableCompressCode(Long workId) {
         CompressionCode compressionCode = compressionCodeDao.getLatestAvailableCompressionCode();
         if (Objects.nonNull(compressionCode)) {
             return compressionCode;
         } else {
-            generateBatchCompressionCodes();
+            generateBatchCompressionCodes(workId);
             return Objects.requireNonNull(compressionCodeDao.getLatestAvailableCompressionCode());
         }
     }
@@ -192,16 +196,22 @@ public class UrlMapService implements BeanFactoryAware {
     /**
      * 批量生成压缩码
      */
-    public void generateBatchCompressionCodes() {
+    public void generateBatchCompressionCodes(Long workId) {
         for (int i = 0; i < compressCodeBatch; i++) {
-            long sequence = sequenceGenerator.generate();
+            long sequence = sequenceGenerator.generate(workId);
             CompressionCode compressionCode = new CompressionCode();
             compressionCode.setSequenceValue(String.valueOf(sequence));
             //可以优化,但是有唯一性约束也还好
             String code = ConversionUtils.X.encode62(sequence);
-            code = code.substring(code.length() - 6);
+            if (sequenceGenerator  instanceof SnowflakeSequenceGenerator){
+                code = code.substring(code.length() - compressCodeExpectLength);
+            }
             compressionCode.setCompressionCode(code);
-            compressionCodeDao.insertSelective(compressionCode);
+            try {
+                compressionCodeDao.insertSelective(compressionCode);
+            } catch (Exception e) {
+                log.error("雪花方案截取压缩码错误:大概率是唯一性索引错误,可忽视", e);
+            }
         }
     }
 

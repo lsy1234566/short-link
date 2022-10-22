@@ -20,7 +20,8 @@ public class SnowflakeSequenceGenerator implements SequenceGenerator {
     }
 
     @Override
-    public long generate() {
+    public long generate(Long id) {
         return javaSnowflake.nextId();
     }
+
 }
