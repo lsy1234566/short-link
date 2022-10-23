@@ -1,9 +1,11 @@
 package cn.throwx.octopus.server.filter.custom;
 
+import cn.throwx.octopus.server.application.consumer.request.TransformEvent;
 import cn.throwx.octopus.server.filter.TransformContext;
 import cn.throwx.octopus.server.filter.TransformFilter;
 import cn.throwx.octopus.server.filter.TransformFilterChain;
 import cn.throwx.octopus.server.infra.common.RabbitQueue;
+import cn.throwx.octopus.server.infra.support.record.RecordEvent;
 import cn.throwx.octopus.server.infra.util.JacksonUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,9 @@ public class TransformEventProcessTransformFilter implements TransformFilter {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private RecordEvent recordEvent;
+
     @Override
     public int order() {
         return 4;
@@ -39,7 +44,7 @@ public class TransformEventProcessTransformFilter implements TransformFilter {
     @Override
     public void doFilter(TransformFilterChain chain,
                          TransformContext context) {
-        UrlTransformRecordEvent event = new UrlTransformRecordEvent();
+        TransformEvent event = new TransformEvent();
         event.setClientIp(context.getParam(TransformContext.PARAM_CLIENT_ID_KEY));
         event.setTimestamp(System.currentTimeMillis());
         event.setCompressionCode(context.getCompressionCode());
@@ -48,55 +53,8 @@ public class TransformEventProcessTransformFilter implements TransformFilter {
         event.setShortUrlString(context.getParam(TransformContext.PARAM_SHORT_URL_KEY));
         event.setLongUrlString(context.getParam(TransformContext.PARAM_TARGET_LONG_URL_KEY));
         event.setTransformStatusValue(context.getTransformStatusValue());
-        rabbitTemplate.convertAndSend(
-                RabbitQueue.TRANSFORM_EVENT_QUEUE.getExchangeName(),
-                RabbitQueue.TRANSFORM_EVENT_QUEUE.getRoutingKey(),
-                JacksonUtils.X.format(event)
-        );
+        recordEvent.transformEvent(event);
         chain.doFilter(context);
     }
 
-    @Data
-    private static class UrlTransformRecordEvent {
-
-        /**
-         * 客户端IP
-         */
-        private String clientIp;
-
-        /**
-         * 压缩码
-         */
-        private String compressionCode;
-
-        /**
-         * user-agent
-         */
-        private String userAgent;
-
-        /**
-         * cookie
-         */
-        private String cookieValue;
-
-        /**
-         * 记录时间戳
-         */
-        private Long timestamp;
-
-        /**
-         * 短链字符串
-         */
-        private String shortUrlString;
-
-        /**
-         * 长链字符串
-         */
-        private String longUrlString;
-
-        /**
-         * 转换状态值
-         */
-        private Integer transformStatusValue;
-    }
 }

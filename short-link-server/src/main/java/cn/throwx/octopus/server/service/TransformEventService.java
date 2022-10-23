@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,6 +31,30 @@ public class TransformEventService {
 
     @Transactional(rollbackFor = Exception.class)
     public void recordTransformEvent(TransformEventRecord record) {
+        fillRecordData(record);
+        transformEventRecordDao.insertSelective(record);
+    }
+
+
+    /**
+     * 批量处理
+     *
+     * @param records 记录列表
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void recordTransformEvent(List<TransformEventRecord> records) {
+        for (TransformEventRecord record : records) {
+            fillRecordData(record);
+            transformEventRecordDao.insertSelective(record);
+        }
+    }
+
+    /**
+     * 填充解析数据
+     *
+     * @param record 记录
+     */
+    private void fillRecordData(TransformEventRecord record) {
         // 身份唯一标识,算法:SHA-1(客户端IP + '-' + UserAgent)
         String uniqueIdentity = DigestUtils.sha1Hex(record.getClientIp() + "-" + record.getUserAgent());
         record.setUniqueIdentity(uniqueIdentity);
@@ -75,6 +100,6 @@ public class TransformEventService {
                 log.error("解析TransformEvent中的UserAgent异常,事件内容:{}", JacksonUtils.X.format(record), e);
             }
         }
-        transformEventRecordDao.insertSelective(record);
     }
+
 }

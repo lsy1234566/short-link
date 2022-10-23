@@ -549,4 +549,176 @@
             transform_status = #{transformStatus,jdbcType=TINYINT}
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <insert id="batchInsertSelective" parameterType="cn.throwx.octopus.server.model.entity.TransformEventRecord"
+            keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+
+        insert into transform_event_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="editTime != null">
+                edit_time,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="editor != null">
+                editor,
+            </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="uniqueIdentity != null">
+                unique_identity,
+            </if>
+            <if test="clientIp != null">
+                client_ip,
+            </if>
+            <if test="shortUrl != null">
+                short_url,
+            </if>
+            <if test="longUrl != null">
+                long_url,
+            </if>
+            <if test="shortUrlDigest != null">
+                short_url_digest,
+            </if>
+            <if test="longUrlDigest != null">
+                long_url_digest,
+            </if>
+            <if test="compressionCode != null">
+                compression_code,
+            </if>
+            <if test="recordTime != null">
+                record_time,
+            </if>
+            <if test="userAgent != null">
+                user_agent,
+            </if>
+            <if test="cookieValue != null">
+                cookie_value,
+            </if>
+            <if test="queryParam != null">
+                query_param,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="phoneType != null">
+                phone_type,
+            </if>
+            <if test="browserType != null">
+                browser_type,
+            </if>
+            <if test="browserVersion != null">
+                browser_version,
+            </if>
+            <if test="osType != null">
+                os_type,
+            </if>
+            <if test="deviceType != null">
+                device_type,
+            </if>
+            <if test="osVersion != null">
+                os_version,
+            </if>
+            <if test="transformStatus != null">
+                transform_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editTime != null">
+                #{editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="editor != null">
+                #{editor,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=TINYINT},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="uniqueIdentity != null">
+                #{uniqueIdentity,jdbcType=VARCHAR},
+            </if>
+            <if test="clientIp != null">
+                #{clientIp,jdbcType=VARCHAR},
+            </if>
+            <if test="shortUrl != null">
+                #{shortUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="longUrl != null">
+                #{longUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="shortUrlDigest != null">
+                #{shortUrlDigest,jdbcType=VARCHAR},
+            </if>
+            <if test="longUrlDigest != null">
+                #{longUrlDigest,jdbcType=VARCHAR},
+            </if>
+            <if test="compressionCode != null">
+                #{compressionCode,jdbcType=VARCHAR},
+            </if>
+            <if test="recordTime != null">
+                #{recordTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userAgent != null">
+                #{userAgent,jdbcType=VARCHAR},
+            </if>
+            <if test="cookieValue != null">
+                #{cookieValue,jdbcType=VARCHAR},
+            </if>
+            <if test="queryParam != null">
+                #{queryParam,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneType != null">
+                #{phoneType,jdbcType=VARCHAR},
+            </if>
+            <if test="browserType != null">
+                #{browserType,jdbcType=VARCHAR},
+            </if>
+            <if test="browserVersion != null">
+                #{browserVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="osType != null">
+                #{osType,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceType != null">
+                #{deviceType,jdbcType=VARCHAR},
+            </if>
+            <if test="osVersion != null">
+                #{osVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="transformStatus != null">
+                #{transformStatus,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
 </mapper>
