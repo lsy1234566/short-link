@@ -79,11 +79,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>transmittable-thread-local</artifactId>
         </dependency>
-        <dependency>
-            <groupId>cn.throwx</groupId>
-            <artifactId>short-link-contract</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
     <build>
         <finalName>octopus</finalName>

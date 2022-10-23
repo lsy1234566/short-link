@@ -27,7 +27,7 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-    <build>
-        <finalName>octopus-contract</finalName>
-    </build>
+<!--    <build>-->
+<!--        <finalName>octopus-contract</finalName>-->
+<!--    </build>-->
 </project>

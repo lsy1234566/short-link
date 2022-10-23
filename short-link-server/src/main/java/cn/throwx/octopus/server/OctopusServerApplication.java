@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @description
  * @since 2020/12/26 12:43
  */
-@EnableScheduling
+//@EnableScheduling
 @SpringBootApplication
 public class OctopusServerApplication {
 

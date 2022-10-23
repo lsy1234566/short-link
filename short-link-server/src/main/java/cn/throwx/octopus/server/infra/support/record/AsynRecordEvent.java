@@ -30,17 +30,18 @@ public class AsynRecordEvent implements RecordEvent, SmartLifecycle {
     @Autowired
     private SpringShutdownEventListening springShutdownEventListening;
 
+
+    //访问记录
     private final LinkedBlockingQueue<TransformEvent> linkedBlockingQueue = new LinkedBlockingQueue(Integer.MAX_VALUE);
 
     @Override
     public void start() {
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        //容器关闭监听
+        //容器关闭监听-处理未记录的访问记录
         springShutdownEventListening.setListening(execTask);
         //每0.2秒处理一次批任务
-        scheduledExecutorService.scheduleWithFixedDelay(execTask, 200, 200, TimeUnit.MILLISECONDS);
+        scheduledExecutorService.scheduleWithFixedDelay(execTask, 200, 1000, TimeUnit.MILLISECONDS);
     }
-
 
     @Override
     public void transformEvent(TransformEvent transformEvent) {
@@ -65,13 +66,14 @@ public class AsynRecordEvent implements RecordEvent, SmartLifecycle {
                 record.setShortUrl(event.getShortUrlString());
                 record.setLongUrl(event.getLongUrlString());
                 transformEvents.add(record);
-            }else {
+            } else {
                 break;
             }
         }
         if (CollectionUtils.isEmpty(transformEvents)) {
             return;
         }
+        log.info("处理异步记录:"+transformEvents.size());
         transformEventService.recordTransformEvent(transformEvents);
     };
 

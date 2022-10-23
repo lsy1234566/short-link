@@ -32,10 +32,10 @@ public class UrlMapServiceTest {
 
     @Test
     public void createUrlMap() {
-        String domain = "localhost:9099";
+        String domain = "192.168.5.141:9099";
         UrlMap urlMap = new UrlMap();
         urlMap.setUrlStatus(UrlMapStatus.AVAILABLE.getValue());
-        urlMap.setLongUrl("https://throwx.cn/2020/08/24/canal-ha-cluster-guide");
+        urlMap.setLongUrl("http://www.baidu.com");
         urlMap.setDescription("测试短链");
         String url = urlMapService.createUrlMap(domain, urlMap);
         log.info("生成的短链:{}", url);

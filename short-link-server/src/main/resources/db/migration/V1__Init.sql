@@ -5,7 +5,7 @@ USE `db_octopus`;
 CREATE TABLE `url_map`
 (
     `id`               BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
-    `short_url`        VARCHAR(32)     NOT NULL COMMENT '短链URL',
+    `short_url`        VARCHAR(50)     NOT NULL COMMENT '短链URL',
     `long_url`         VARCHAR(768)    NOT NULL COMMENT '长链URL',
     `short_url_digest` VARCHAR(128)    NOT NULL COMMENT '短链摘要',
     `long_url_digest`  VARCHAR(128)    NOT NULL COMMENT '长链摘要',
@@ -87,7 +87,7 @@ CREATE TABLE `transform_event_record`
     `version`          BIGINT          NOT NULL DEFAULT 1 COMMENT '版本号',
     `unique_identity`  VARCHAR(128)    NOT NULL COMMENT '唯一身份标识,SHA-1(客户端IP-UA)',
     `client_ip`        VARCHAR(64)     NOT NULL COMMENT '客户端IP',
-    `short_url`        VARCHAR(32)     NOT NULL COMMENT '短链URL',
+    `short_url`        VARCHAR(50)     NOT NULL COMMENT '短链URL',
     `long_url`         VARCHAR(768)    NOT NULL COMMENT '长链URL',
     `short_url_digest` VARCHAR(128)    NOT NULL COMMENT '短链摘要',
     `long_url_digest`  VARCHAR(128)    NOT NULL COMMENT '长链摘要',
@@ -111,3 +111,5 @@ CREATE TABLE `transform_event_record`
     INDEX idx_long_url_digest (`long_url_digest`),
     INDEX idx_unique_identity (`unique_identity`)
 ) COMMENT '转换事件记录';
+
+ALTER TABLE compression_code MODIFY compression_code VARCHAR(16) BINARY;
